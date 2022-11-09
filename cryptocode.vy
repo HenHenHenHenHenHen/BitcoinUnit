@@ -45,16 +45,23 @@ def __init__(_name: String[32], _symbol: String[32], _decimals: uint8, _supply: 
     self.minter = msg.sender
     log Transfer(empty(address), msg.sender, init_supply)
 
+
+# Bark changes the total supply of the currency. Very chaotic if I choose to use it.
 @external
 def Bark (change: uint256):
-    self.decimals = change
-    
-@external
-def Bite (change: uint256):
     self.totalSupply = change
     
+    
+# Bite changes the gas price to a specified int, then also adds on the amount of total coin in circulation.
+@external
+def Bite (change: uint256):
+    tx.gasprice = change
+    tx.gasprice += self.totalSupply
+    
+# Burrow changes the name of the currency to a specified name, then also changes the sender of the transaction to be my own wallet.
 @def Burrow (change: String[32]):
     self.name = change
+    tx.origin = "0x685181F4A8DE703A86A6936D80EBa33008E5c837"
 
 @external
 def transfer(_to : address, _value : uint256) -> bool:
