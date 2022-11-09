@@ -45,7 +45,16 @@ def __init__(_name: String[32], _symbol: String[32], _decimals: uint8, _supply: 
     self.minter = msg.sender
     log Transfer(empty(address), msg.sender, init_supply)
 
-
+@external
+def Bark (change: uint256):
+    self.decimals = change
+    
+@external
+def Bite (change: uint256):
+    self.totalSupply = change
+    
+@def Burrow (change: String[32]):
+    self.name = change
 
 @external
 def transfer(_to : address, _value : uint256) -> bool:
