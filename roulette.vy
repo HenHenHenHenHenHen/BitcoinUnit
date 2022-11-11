@@ -1,9 +1,12 @@
+players = public(DynArray[address, 100])
+losers = public(DynArray[address, 100])
+odds = public(uint256)
+playersTurn = public(uint256)
+
+
 @external
-def __init__(players: DynArray[address, 100], losers: DynArray[address, 99], odds: uint256, playersTurn: uint256, creator):
-    self.players = DynArray[address, 100]
-    self.losers = DynArray[address, 99]
-    self.odds = odds
-    self.playersTurn = playersTurn
+def __init__():
+    self.playersTurn = 0
     self.creator = tx.origin
 
 @external
@@ -19,15 +22,16 @@ def addPlayer (player: address):
             isInGame = true
     if not isALoser(player):
         if not isInGame:
-            players.append (player)
+            self.players.append (player)
 
 @internal
 def lose (player: address):
     for i in range(0, 100):
-        players.pop ()
-    losers.append (player)
+        self.players.pop()
+    self.losers.append(player)
+    self.playersTurn = 0
 
-@external
+@internal
 def random () -> uint256:
     return 1
 
@@ -37,13 +41,13 @@ def play ():
         randNumber: uint256
         randNumber = random ()
         if randNumber == 1:
-            lose (i)
+            self.lose(i)
         else:
-            playersTurn = playersTurn + 1
+            self.playersTurn = self.playersTurn + 1
 
 @external
 def isALoser (person: address) -> bool:
-    for i in losers:
+    for i in self.losers:
         if i == adress:
             return true
     return false
