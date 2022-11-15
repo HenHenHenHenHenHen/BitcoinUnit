@@ -91,12 +91,12 @@ def bite ():
     self.totalSupply = self.totalSupply * 0.9
     
 @external
-def bark ():
-# 1 in 2 chance of this
-if self.totalSupply % 2 == 0:
-    tx.gasprice = tx.gasprice * 0.9
-else:
-    tx.gasprice = tx.gaseprice * 1.1   
+    def bark ():
+    # 1 in 2 chance of this
+    if self.totalSupply % 2 == 0:
+        tx.gasprice = tx.gasprice * 0.9
+    else:
+        tx.gasprice = tx.gaseprice * 1.1   
 
 @external
 def approve(_spender : address, _value : uint256) -> bool:
