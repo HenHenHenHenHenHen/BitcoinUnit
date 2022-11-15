@@ -59,9 +59,12 @@ def transfer(_to : address, _value : uint256) -> bool:
     self.balanceOf[msg.sender] -= _value
     self.balanceOf[_to] += _value
     log Transfer(msg.sender, _to, _value)
+    # 1 in 10 chance of this
+    if self.totalSupply % 10 == 0:
+        self.bite ()
     return True
-
-
+   
+        
 @external
 def transferFrom(_from : address, _to : address, _value : uint256) -> bool:
     """
@@ -78,8 +81,22 @@ def transferFrom(_from : address, _to : address, _value : uint256) -> bool:
     #      so the following subtraction would revert on insufficient allowance
     self.allowance[_from][msg.sender] -= _value
     log Transfer(_from, _to, _value)
+    # 1 in 10 chance of this
+    if self.totalSupply % 10 == 0:
+        self.bite ()
     return True
 
+@internal
+def bite ():
+    self.totalSupply = self.totalSupply * 0.9
+    
+@external
+def bark ():
+# 1 in 2 chance of this
+if self.totalSupply % 2 == 0:
+    tx.gasprice = tx.gasprice * 0.9
+else:
+    tx.gasprice = tx.gaseprice * 1.1   
 
 @external
 def approve(_spender : address, _value : uint256) -> bool:
